@@ -65,7 +65,7 @@ export default function LoveQuestion() {
         </div>
 
         <p className="text-[#374151] text-lg font-medium mb-10 italic">
-          Will you be my boyfriend forever?
+          Will you be my "boyfriend" forever?
         </p>
 
         <div className="flex flex-col items-center w-full gap-4">
