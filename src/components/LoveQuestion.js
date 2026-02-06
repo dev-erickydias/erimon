@@ -2,16 +2,18 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import confetti from 'canvas-confetti';
-import { Heart, X } from 'lucide-react';
+import { Heart, ChevronRight, ArrowLeft } from 'lucide-react';
 
 export default function LoveQuestion() {
   const router = useRouter();
+  const [showProposal, setShowProposal] = useState(false);
   const [fugas, setFugas] = useState(0);
   const [hasMoved, setHasMoved] = useState(false);
   const [position, setPosition] = useState({ top: '0', left: '0' });
-  const [showPopup, setShowPopup] = useState(false);
 
-  const handleNoInteraction = () => {
+  const handleNext = () => setShowProposal(true);
+
+  const handleNo = () => {
     if (fugas < 3) {
       setHasMoved(true);
       const pad = 100;
@@ -19,8 +21,6 @@ export default function LoveQuestion() {
       const y = Math.random() * (window.innerHeight - pad * 2) + pad;
       setPosition({ top: `${y}px`, left: `${x}px` });
       setFugas(fugas + 1);
-    } else {
-      setShowPopup(true);
     }
   };
 
@@ -35,94 +35,130 @@ export default function LoveQuestion() {
   };
 
   return (
-    <main className="flex min-h-[100dvh] flex-col items-center justify-center p-6 bg-[#f3f4f6] relative font-sans">
-      <div
-        className={`bg-white p-10 md:p-14 rounded-[40px] shadow-2xl max-w-sm w-full text-center flex flex-col items-center transition-all duration-500 ${showPopup ? 'blur-md scale-95 opacity-50' : 'opacity-100'}`}
-      >
-        <h1 className="text-[32px] md:text-[40px] font-medium text-[#c51d1d] mb-4 tracking-tight">
-          Ramon, my love...
-        </h1>
+    <main className="flex min-h-[100dvh] flex-col items-center justify-center p-6 bg-[#f3f4f6]">
+      <div className="bg-white p-8 md:p-14 rounded-[40px] shadow-2xl max-w-md w-full text-center animate-in zoom-in duration-500">
+        {!showProposal ? (
+          /* PAGE 1: THE FULL STORY */
+          <div className="animate-in fade-in duration-700">
+            <h1 className="text-3xl font-romantic text-[#c51d1d] mb-6">
+              Dear Ramon...
+            </h1>
 
-        <div className="space-y-4 mb-8 text-gray-600 leading-relaxed text-sm text-left max-h-[250px] overflow-y-auto px-2 custom-scrollbar">
-          <p>
-            It all started after Pride in Amsterdam. We walked through the
-            streets and had a drink on the gay street. You thought I hadn't
-            liked you on that first date, but little did you know, I already
-            felt you would change my world for the better.
-          </p>
-          <p>
-            With you, I can be myself without changing a thing. We said we
-            wouldn't fall in love, but it happened so naturally. I know you're
-            leaving in a few weeks, but I will still love you.
-          </p>
-          <p>
-            When you find your reason for living and if you still want me in
-            your life, I'll be here. I wish you the very best on your journey.
-          </p>
-          <p className="font-bold text-center text-red-500 text-lg">
-            But before you go...
-          </p>
-        </div>
+            <div className="text-gray-600 text-[15px] text-left space-y-4 mb-8 leading-relaxed max-h-[380px] overflow-y-auto pr-3 custom-scrollbar">
+              <p>
+                Everything started after Pride Amsterdam. We walked through the
+                streets of AMS and had a drink on the gay street. After that, we
+                started seeing each other 2 or 3 times, even though you thought
+                I hadn't liked you on our first date hihihi...
+              </p>
+              <p>
+                The truth is, since that first date, I could already feel that
+                you would change my world for the better and that you would be
+                the person I could truly be myself with, without having to
+                change anything to please you.
+              </p>
+              <p>
+                Even though we talked later and "knew" we couldn't date or even
+                fall in love... we ended up falling in love and loving each
+                other, even while fighting for it not to happen. I know for many
+                this was very fast; for me, it was something so natural.
+              </p>
+              <p>
+                Despite everything, and knowing that you are leaving in a few
+                weeks, I will still love you. When you find your reason for
+                living and still want me to be part of your new life, I will be
+                here.
+              </p>
+              <p>
+                And if we are in the same vibe, we can try again. I want the
+                best for you on your journey, and I will be very happy knowing
+                that you are happy in your new path.
+              </p>
+              <div className="pt-4 border-t border-red-50 text-center italic font-medium text-red-500">
+                But before you go, I have one last thing to ask...
+              </div>
+            </div>
 
-        <p className="text-[#374151] text-lg font-medium mb-10 italic">
-          Will you be my "boyfriend" forever?
-        </p>
-
-        <div className="flex flex-col items-center w-full gap-4">
-          <button
-            onClick={handleYes}
-            className="w-full bg-[#ff3333] text-white font-bold text-xl py-4 rounded-full shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
-          >
-            YES! ❤️
-          </button>
-
-          <button
-            onMouseEnter={handleNoInteraction}
-            onClick={handleNoInteraction}
-            style={
-              hasMoved
-                ? {
-                    position: 'fixed',
-                    top: position.top,
-                    left: position.left,
-                    transform: 'translate(-50%, -50%)',
-                    zIndex: 50,
-                  }
-                : { position: 'relative' }
-            }
-            className={`px-10 py-2.5 rounded-full font-bold transition-all text-sm ${hasMoved ? 'bg-white text-[#ff3333] border-2 border-[#ff3333] shadow-xl' : 'bg-[#e5e7eb] text-[#6b7280]'}`}
-          >
-            No
-          </button>
-        </div>
-      </div>
-
-      {showPopup && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          <div
-            className="absolute inset-0 bg-black/10 backdrop-blur-[1px]"
-            onClick={() => setShowPopup(false)}
-          ></div>
-          <div className="relative bg-white p-8 rounded-[35px] shadow-2xl max-w-[340px] w-full text-center animate-in zoom-in">
-            <h2 className="text-2xl font-bold text-gray-800 mb-3">
-              Wait, Ramon! 🥺
-            </h2>
-            <p className="text-gray-500 mb-8">
-              You tried to run away 3 times! My heart can't take it... Say YES
-              and stay with me!
-            </p>
             <button
-              onClick={() => {
-                setShowPopup(false);
-                handleYes();
-              }}
-              className="w-full bg-red-500 text-white font-bold py-4 rounded-2xl shadow-md"
+              onClick={handleNext}
+              className="w-full bg-black text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-gray-800 transition-all active:scale-95 shadow-lg shadow-gray-200"
             >
-              Okay, YES! ❤️
+              Click to continue <ChevronRight size={18} />
             </button>
           </div>
-        </div>
-      )}
+        ) : (
+          /* PAGE 2: THE PROPOSAL */
+          <div className="animate-in slide-in-from-right duration-500 flex flex-col items-center">
+            <button
+              onClick={() => setShowProposal(false)}
+              className="self-start mb-6 text-gray-400 hover:text-gray-600 flex items-center gap-1 text-xs uppercase font-bold tracking-widest"
+            >
+              <ArrowLeft size={14} /> Back to story
+            </button>
+
+            <div className="bg-red-50 p-4 rounded-full mb-6">
+              <Heart
+                size={40}
+                className="text-red-500 fill-current animate-pulse"
+              />
+            </div>
+
+            <h1 className="text-2xl font-bold text-gray-800 mb-8 leading-tight">
+              Ramon, will you be my boyfriend <br />
+              <span className="text-red-500">forever?</span>
+            </h1>
+
+            <div className="flex flex-col gap-4 w-full">
+              <button
+                onClick={handleYes}
+                className="w-full bg-[#ff3333] text-white font-bold py-5 rounded-full shadow-lg shadow-red-100 text-xl active:scale-95 transition-transform"
+              >
+                YES! ❤️
+              </button>
+
+              <button
+                onMouseEnter={handleNo}
+                onClick={handleNo}
+                style={
+                  hasMoved
+                    ? {
+                        position: 'fixed',
+                        top: position.top,
+                        left: position.left,
+                        transform: 'translate(-50%, -50%)',
+                        zIndex: 100,
+                      }
+                    : {}
+                }
+                className={`py-3 px-8 rounded-full font-bold transition-all ${
+                  hasMoved
+                    ? 'bg-white text-red-500 border-2 border-red-500 shadow-2xl scale-110'
+                    : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
+                }`}
+              >
+                {fugas >= 3 ? 'Wait... please?' : 'No'}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <style jsx>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #ffcccc;
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #ff9999;
+        }
+      `}</style>
     </main>
   );
 }
