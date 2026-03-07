@@ -1,31 +1,31 @@
-import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
-
 export const metadata = {
-  title: 'EriMon - Forever',
-  description: 'A special place for our memories',
+  title: 'EriMon — Forever',
+  description: 'A special place for our love story',
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="antialiased min-h-screen flex flex-col bg-[#f3f4f6]">
-        {/* O conteúdo de cada página entra aqui */}
-        <div className="flex-grow">{children}</div>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="antialiased min-h-screen flex flex-col">
+        {/* Main content */}
+        <div className="flex-grow relative z-10">{children}</div>
 
-        {/* Rodapé fixo para todas as rotas */}
-        <footer className="py-8 text-center opacity-30">
-          <p className="text-[#9ca3af] text-xs font-medium uppercase tracking-[0.3em]">
+        {/* Elegant footer */}
+        <footer className="py-10 text-center relative z-10">
+          <div className="elegant-divider max-w-[120px] mx-auto mb-4">
+            <span className="text-[10px] text-[var(--rose-gold-light)]">♥</span>
+          </div>
+          <p className="text-[var(--warm-gray-400)] text-[10px] font-body font-medium uppercase tracking-[0.35em]">
             EriMon • Forever
           </p>
         </footer>

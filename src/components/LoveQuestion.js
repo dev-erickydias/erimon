@@ -10,6 +10,7 @@ export default function LoveQuestion() {
   const [fugas, setFugas] = useState(0);
   const [hasMoved, setHasMoved] = useState(false);
   const [position, setPosition] = useState({ top: '0', left: '0' });
+  const [accepted, setAccepted] = useState(false);
 
   const handleNext = () => setShowProposal(true);
 
@@ -25,26 +26,39 @@ export default function LoveQuestion() {
   };
 
   const handleYes = () => {
-    confetti({
-      particleCount: 150,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#ff3333', '#ffffff', '#ffb3b3'],
-    });
-    setTimeout(() => router.push('/galery'), 1500);
+    setAccepted(true);
+
+    // Multi-burst confetti
+    const colors = ['#b76e79', '#d4a0a8', '#f5e6e0', '#e04d6d', '#c9a96e'];
+    const fire = (opts) => confetti({ ...opts, colors, disableForReducedMotion: true });
+
+    fire({ particleCount: 80, spread: 60, origin: { y: 0.7, x: 0.3 } });
+    setTimeout(() => fire({ particleCount: 80, spread: 60, origin: { y: 0.7, x: 0.7 } }), 200);
+    setTimeout(() => fire({ particleCount: 120, spread: 100, origin: { y: 0.5 } }), 500);
+
+    setTimeout(() => router.push('/galery'), 2500);
   };
 
   return (
-    <main className="flex min-h-[100dvh] flex-col items-center justify-center p-6 bg-[#f3f4f6]">
-      <div className="bg-white p-8 md:p-14 rounded-[40px] shadow-2xl max-w-md w-full text-center animate-in zoom-in duration-500">
+    <main className="flex min-h-[100dvh] flex-col items-center justify-center p-6">
+      <div className="glass-card-strong p-8 md:p-14 rounded-[36px] max-w-md w-full text-center animate-zoom-in relative overflow-hidden">
+
+        {/* Subtle shimmer overlay */}
+        <div className="absolute inset-0 animate-shimmer rounded-[36px] pointer-events-none" />
+
         {!showProposal ? (
-          /* PAGE 1: THE FULL STORY */
-          <div className="animate-in fade-in duration-700">
-            <h1 className="text-3xl font-romantic text-[#c51d1d] mb-6">
+          /* ═══ PAGE 1: THE LOVE LETTER ═══ */
+          <div className="animate-fade-in relative z-10">
+            {/* Decorative top */}
+            <div className="elegant-divider max-w-[80px] mx-auto mb-6">
+              <span className="text-[10px] text-[var(--rose-gold-light)]">♥</span>
+            </div>
+
+            <h1 className="font-romantic text-3xl md:text-4xl text-gradient-rose mb-6">
               Dear Ramon...
             </h1>
 
-            <div className="text-gray-600 text-[15px] text-left space-y-4 mb-8 leading-relaxed max-h-[380px] overflow-y-auto pr-3 custom-scrollbar">
+            <div className="text-[var(--warm-gray-500)] text-[14px] text-left space-y-4 mb-8 leading-[1.75] max-h-[380px] overflow-y-auto pr-3 custom-scrollbar font-body">
               <p>
                 Everything started after Pride Amsterdam. We walked through the
                 streets of AMS and had a drink on the gay street. After that, we
@@ -74,91 +88,92 @@ export default function LoveQuestion() {
                 best for you on your journey, and I will be very happy knowing
                 that you are happy in your new path.
               </p>
-              <div className="pt-4 border-t border-red-50 text-center italic font-medium text-red-500">
-                But before you go, I have one last thing to ask...
+
+              <div className="pt-5 mt-2 border-t border-[var(--blush)]">
+                <p className="text-center font-romantic italic text-[var(--rose-gold)] text-base">
+                  But before you go, I have one last thing to ask...
+                </p>
               </div>
             </div>
 
             <button
               onClick={handleNext}
-              className="w-full bg-black text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-gray-800 transition-all active:scale-95 shadow-lg shadow-gray-200"
+              className="btn-rose w-full py-4 rounded-2xl flex items-center justify-center gap-2 text-sm"
             >
-              Click to continue <ChevronRight size={18} />
+              Continue <ChevronRight size={16} strokeWidth={1.5} />
             </button>
           </div>
         ) : (
-          /* PAGE 2: THE PROPOSAL */
-          <div className="animate-in slide-in-from-right duration-500 flex flex-col items-center">
+          /* ═══ PAGE 2: THE PROPOSAL ═══ */
+          <div className="animate-slide-in-right relative z-10 flex flex-col items-center">
             <button
               onClick={() => setShowProposal(false)}
-              className="self-start mb-6 text-gray-400 hover:text-gray-600 flex items-center gap-1 text-xs uppercase font-bold tracking-widest"
+              className="self-start mb-8 text-[var(--warm-gray-400)] hover:text-[var(--rose-gold)] flex items-center gap-1 text-[10px] uppercase font-body font-semibold tracking-[0.2em] transition-colors"
             >
-              <ArrowLeft size={14} /> Back to story
+              <ArrowLeft size={12} strokeWidth={1.5} /> Back to letter
             </button>
 
-            <div className="bg-red-50 p-4 rounded-full mb-6">
+            {/* Heart icon */}
+            <div className="w-20 h-20 rounded-full bg-[var(--rose-50)] flex items-center justify-center mb-8">
               <Heart
-                size={40}
-                className="text-red-500 fill-current animate-pulse"
+                size={32}
+                className="text-[var(--rose-gold)] fill-current animate-pulse-soft"
+                strokeWidth={1.5}
               />
             </div>
 
-            <h1 className="text-2xl font-bold text-gray-800 mb-8 leading-tight">
-              Ramon, will you be my boyfriend <br />
-              <span className="text-red-500">forever?</span>
+            <h1 className="font-romantic text-2xl md:text-3xl text-[var(--warm-gray-800)] mb-2 leading-tight">
+              Ramon, will you be my boyfriend
             </h1>
+            <p className="font-romantic text-2xl md:text-3xl text-gradient-rose mb-10 italic">
+              forever?
+            </p>
 
-            <div className="flex flex-col gap-4 w-full">
-              <button
-                onClick={handleYes}
-                className="w-full bg-[#ff3333] text-white font-bold py-5 rounded-full shadow-lg shadow-red-100 text-xl active:scale-95 transition-transform"
-              >
-                YES! ❤️
-              </button>
+            {accepted ? (
+              <div className="animate-fade-in-up text-center">
+                <p className="font-romantic text-2xl text-[var(--rose-gold)] mb-2">
+                  I love you
+                </p>
+                <p className="text-[var(--warm-gray-400)] text-sm font-body">
+                  Redirecting to our memories...
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-4 w-full">
+                <button
+                  onClick={handleYes}
+                  className="btn-rose w-full py-5 rounded-2xl text-lg font-romantic tracking-wide"
+                >
+                  Yes, forever
+                </button>
 
-              <button
-                onMouseEnter={handleNo}
-                onClick={handleNo}
-                style={
-                  hasMoved
-                    ? {
-                        position: 'fixed',
-                        top: position.top,
-                        left: position.left,
-                        transform: 'translate(-50%, -50%)',
-                        zIndex: 100,
-                      }
-                    : {}
-                }
-                className={`py-3 px-8 rounded-full font-bold transition-all ${
-                  hasMoved
-                    ? 'bg-white text-red-500 border-2 border-red-500 shadow-2xl scale-110'
-                    : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
-                }`}
-              >
-                {fugas >= 3 ? 'Wait... please?' : 'No'}
-              </button>
-            </div>
+                <button
+                  onMouseEnter={handleNo}
+                  onClick={handleNo}
+                  style={
+                    hasMoved
+                      ? {
+                          position: 'fixed',
+                          top: position.top,
+                          left: position.left,
+                          transform: 'translate(-50%, -50%)',
+                          zIndex: 100,
+                        }
+                      : {}
+                  }
+                  className={`py-3 px-8 rounded-full font-body font-medium transition-all duration-300 ${
+                    hasMoved
+                      ? 'glass-card-strong text-[var(--rose-gold)] text-sm shadow-2xl'
+                      : 'bg-[var(--warm-gray-50)] text-[var(--warm-gray-400)] hover:bg-[var(--blush)] text-sm'
+                  }`}
+                >
+                  {fugas >= 3 ? 'Wait... please?' : 'No'}
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
-
-      <style jsx>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: #f1f1f1;
-          border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #ffcccc;
-          border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #ff9999;
-        }
-      `}</style>
     </main>
   );
 }
